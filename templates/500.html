@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto mt-20 text-center">
+    <div class="glass p-8 rounded-lg">
+        <h1 class="text-4xl font-bold mb-4">500</h1>
+        <p class="text-lg mb-4">An internal server error occurred.</p>
+        <a href="{{ url_for('main.feed') }}" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded">Go to Feed</a>
+    </div>
+</div>
+{% endblock %}

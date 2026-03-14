@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Skynet - Anime Social Network{% endblock %}</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Optional local overrides -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <style>
+        /* Light glass effect used in templates */
+        .glass {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 text-white">
+    <!-- Navigation -->
+    <nav class="bg-black bg-opacity-40 backdrop-blur sticky top-0 z-50 border-b border-purple-700">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <a href="{{ url_for('main.feed') }}" class="flex items-center space-x-2">
+                    <span class="text-2xl">⚡</span>
+                    <span class="text-xl font-bold">Skynet</span>
+                </a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('main.feed') }}" class="text-purple-200 hover:text-white">Feed</a>
+                    <a href="{{ url_for('main.create_post') }}" class="text-purple-200 hover:text-white">Create Post</a>
+                    <a href="{{ url_for('main.my_profile') }}" class="text-purple-200 hover:text-white">Profile</a>
+                    <a href="{{ url_for('auth.logout') }}" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="text-purple-200 hover:text-white">Login</a>
+                    <a href="{{ url_for('auth.register') }}" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash messages -->
+    <div class="max-w-6xl mx-auto px-4 py-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="mb-3">
+                        {% if category == 'success' %}
+                            <div class="bg-green-500 text-white px-4 py-2 rounded">{{ message }}</div>
+                        {% elif category == 'error' %}
+                            <div class="bg-red-500 text-white px-4 py-2 rounded">{{ message }}</div>
+                        {% else %}
+                            <div class="bg-blue-500 text-white px-4 py-2 rounded">{{ message }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main content -->
+    <main class="max-w-6xl mx-auto px-4 pb-12">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-12">
+        <div class="max-w-6xl mx-auto px-4 py-6 text-center text-purple-300">
+            <small>&copy; 2026 Skynet. Made with ⚡ and anime.</small>
+        </div>
+    </footer>
+</body>
+</html>

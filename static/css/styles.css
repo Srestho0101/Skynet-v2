@@ -1,0 +1,17 @@
+/* Small local overrides and helper classes for Skynet */
+
+/* Make form inputs a bit more visible on dark backgrounds */
+input[type="text"], input[type="email"], input[type="password"], textarea {
+    color: #fff;
+}
+
+/* Make links slightly brighter on hover */
+a:hover {
+    opacity: 0.95;
+}
+
+/* Small responsive helpers */
+@media (max-width: 640px) {
+    .text-9xl { font-size: 4.5rem; }
+    .text-8xl { font-size: 3.8rem; }
+}

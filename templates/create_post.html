@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}{% if post %}Edit Post{% else %}Create Post{% endif %} - Skynet{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto mt-8">
+    <h1 class="text-3xl font-bold mb-4">{% if post %}Edit Post{% else %}Create Post{% endif %}</h1>
+
+    <div class="glass p-6 rounded-lg">
+        <form method="POST" enctype="multipart/form-data" novalidate>
+            {{ form.hidden_tag() }}
+
+            <div class="mb-4">
+                <label class="block mb-2 font-semibold">{{ form.content.label }}</label>
+                {{ form.content(class="w-full px-3 py-2 rounded bg-white bg-opacity-6 border border-purple-700") }}
+                {% for err in form.content.errors %}
+                    <p class="text-red-400 text-sm mt-1">{{ err }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="mb-4">
+                <label class="block mb-2 font-semibold">{{ form.image.label }}</label>
+                {{ form.image(class="w-full") }}
+                {% for err in form.image.errors %}
+                    <p class="text-red-400 text-sm mt-1">{{ err }}</p>
+                {% endfor %}
+                <p class="text-purple-300 text-sm mt-2">Allowed: jpg, jpeg, png, gif — max 16MB.</p>
+            </div>
+
+            <div class="flex space-x-3">
+                <button type="submit" class="bg-purple-600 hover:bg-purple-700 py-2 px-4 rounded">Save</button>
+                <a href="{{ url_for('main.feed') }}" class="bg-gray-600 hover:bg-gray-700 py-2 px-4 rounded">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

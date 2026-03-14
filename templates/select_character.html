@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Select Character - Skynet{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto mt-12">
+    <h1 class="text-3xl font-bold mb-2">Select Your Character</h1>
+    <p class="text-purple-200 mb-6">Choose a character from <strong>{{ anime.name }}</strong></p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for character in characters %}
+        <form method="POST" action="{{ url_for('auth.claim_character_route') }}" class="glass p-6 rounded-lg">
+            <input type="hidden" name="user_id" value="{{ user_id }}">
+            <input type="hidden" name="character_id" value="{{ character.id }}">
+
+            <div class="text-6xl mb-3">{{ character.avatar }}</div>
+            <h4 class="text-xl font-bold">{{ character.name }}</h4>
+            <p class="text-purple-300 mb-4">From: {{ anime.name }}</p>
+            <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 py-2 rounded">Choose This Character</button>
+        </form>
+        {% endfor %}
+    </div>
+
+    {% if not characters %}
+    <div class="glass p-6 rounded-lg mt-6 text-center">
+        <p class="text-white">No available characters for this anime.</p>
+        <a href="{{ url_for('auth.select_anime', user_id=user_id) }}" class="text-purple-300 underline mt-3 inline-block">Back to anime list</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto mt-20 text-center">
+    <div class="glass p-8 rounded-lg">
+        <h1 class="text-5xl font-bold mb-4">404</h1>
+        <p class="text-xl mb-4">Page not found.</p>
+        <a href="{{ url_for('main.feed') }}" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded">Go to Feed</a>
+    </div>
+</div>
+{% endblock %}

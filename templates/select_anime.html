@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Select Anime - Skynet{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto mt-12">
+    <h1 class="text-4xl font-bold mb-2">Choose Your Anime</h1>
+    <p class="text-purple-200 mb-6">Select the anime series your character is from</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for anime in anime_list %}
+        <a href="{{ url_for('auth.select_character', user_id=user_id, anime_id=anime.id) }}"
+           class="glass p-6 rounded-lg hover:scale-105 transition transform">
+            <div class="text-4xl mb-3">📺</div>
+            <h3 class="text-xl font-bold">{{ anime.name }}</h3>
+            <p class="text-purple-300 mt-2">
+                {{ anime.characters|selectattr('taken', 'equalto', false)|list|length }} available
+            </p>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

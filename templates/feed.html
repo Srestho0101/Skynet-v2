@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Feed - Skynet{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto mt-8">
+    <h1 class="text-4xl font-bold mb-6">Global Feed</h1>
+
+    {% if posts.items %}
+        {% for post in posts.items %}
+        <div class="glass p-6 rounded-lg mb-6">
+            <div class="flex items-start justify-between">
+                <a href="{{ url_for('main.profile', user_id=post.user.id) }}" class="flex items-center space-x-4">
+                    <div class="text-4xl">{{ post.user.character.avatar if post.user.character else '🧑' }}</div>
+                    <div>
+                        <div class="font-bold">{{ post.user.character.name if post.user.character else 'Unknown' }}</div>
+                        <div class="text-sm text-purple-300">{{ post.user.email }}</div>
+                    </div>
+                </a>
+
+                {% if current_user.is_authenticated and current_user.id == post.user.id %}
+                <div class="flex items-center space-x-3">
+                    <a href="{{ url_for('main.edit_post', post_id=post.id) }}" class="text-purple-300">✏️</a>
+                    <form method="POST" action="{{ url_for('main.delete_post', post_id=post.id) }}">
+                        <button type="submit" class="text-red-400" onclick="return confirm('Delete this post?')">🗑️</button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="mt-4 text-sm text-purple-300">{{ post.created_at.strftime('%b %d, %Y at %I:%M %p') }}</div>
+            <p class="mt-3 text-white">{{ post.content }}</p>
+
+            {% if post.image_path %}
+            <div class="mt-4 rounded overflow-hidden">
+                <img src="{{ url_for('static', filename=post.image_path) }}" alt="post image" class="w-full object-cover max-h-96">
+            </div>
+            {% endif %}
+
+            <div class="mt-4 border-t border-purple-700 pt-3 flex items-center justify-between">
+                <div>
+                    {% if current_user.is_authenticated %}
+                        {% set liked = post.is_liked_by(current_user) %}
+                        <form method="POST" action="{{ url_for('main.like_post', post_id=post.id) }}">
+                            <button type="submit" class="flex items-center space-x-2 text-purple-200">
+                                <span>{% if liked %}❤️{% else %}🤍{% endif %}</span>
+                                <span>{{ post.like_count() }}</span>
+                            </button>
+                        </form>
+                    {% else %}
+                        <div class="text-purple-200 flex items-center space-x-2">
+                            <span>🤍</span>
+                            <span>{{ post.like_count() }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="text-sm text-purple-300">#{{ post.id }}</div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Pagination -->
+        {% if posts.pages > 1 %}
+        <div class="flex justify-center items-center space-x-4 mt-6">
+            {% if posts.has_prev %}
+                <a href="{{ url_for('main.feed', page=posts.prev_num) }}" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded">← Prev</a>
+            {% endif %}
+            <span class="text-white">Page {{ posts.page }} / {{ posts.pages }}</span>
+            {% if posts.has_next %}
+                <a href="{{ url_for('main.feed', page=posts.next_num) }}" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded">Next →</a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+    {% else %}
+        <div class="glass p-12 rounded-lg text-center">
+            <p class="text-white mb-4">No posts yet. Be the first to share!</p>
+            <a href="{{ url_for('main.create_post') }}" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded">Create Post</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
