@@ -4,7 +4,7 @@ from datetime import timedelta
 class Config:
     SQLALCHEMY_DATABASE_URI = os.getenv(
         'DATABASE_URL',
-        'postgresql://skynet_user:skynet_password@localhost:5432/skynet_db'
+        'postgresql://skynet_user:7ZffAJVNZps6gXrQq340GmysjDmskZ1U@dpg-d6qvsnn5r7bs738olkhg-a/skynet_xfta'
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     REMEMBER_COOKIE_DURATION = timedelta(days=7)
